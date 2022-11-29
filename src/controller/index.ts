@@ -4,13 +4,14 @@ export class Application {
   start() {
     console.log("Application started");
     const eventListenTask = new EventListenTask();
-    const deleteButton = document.getElementById("#deleteAllDoneTask");
+    const deleteButton = document.getElementById("deleteAllDoneTask");
 
     if (!deleteButton) return;
 
     eventListenTask.addTask("sample", "click", deleteButton, () =>
       alert("clicked")
     );
+    eventListenTask.removeTask("sample");
   }
 }
 

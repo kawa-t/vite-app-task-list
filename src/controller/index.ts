@@ -12,15 +12,7 @@ export class Application {
 
   start() {
     console.log("Application started");
-    // const eventListenTask = new EventListenTask()
-    // const deleteButton = document.getElementById("deleteAllDoneTask");
 
-    // if (!deleteButton) return;
-
-    // eventListenTask.addTask("sample", "click", deleteButton, () =>
-    // alert("clicked")
-    // );
-    // eventListenTask.removeTask("sample");
     const createForm = document.getElementById("createForm") as HTMLElement;
 
     this.eventListenTask.addTask(
@@ -41,11 +33,26 @@ export class Application {
 
     this.taskCollection.addTask(taskComponent);
 
-    this.taskRender.append(taskComponent);
+    const { deleteButtonElement } = this.taskRender.append(taskComponent);
 
     console.log(this.taskCollection);
 
+    this.eventListenTask.addTask(
+      taskComponent.taskId,
+      "click",
+      deleteButtonElement,
+      () => {
+        this.handleClickDeleteTask(taskComponent);
+      }
+    );
+
     titleInput.value = "";
+  };
+
+  private handleClickDeleteTask = (taskId: TaskInstance) => {
+    if (!window.confirm(`${taskId.title}を削除してもいいですか`)) return;
+
+    console.log(taskId);
   };
 }
 

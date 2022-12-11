@@ -5,9 +5,11 @@ export class TaskRender {
   constructor(private readonly todoTaskList: HTMLElement) {}
 
   append(task: TaskInstance) {
-    const taskElement = this.render(task);
+    const { taskElement, deleteButtonElement } = this.render(task);
 
     this.todoTaskList.append(taskElement);
+
+    return { deleteButtonElement };
   }
 
   // HTML要素を作成
@@ -24,6 +26,6 @@ export class TaskRender {
 
     taskElement.append(spanTagElement, deleteButtonElement);
 
-    return taskElement;
+    return { taskElement, deleteButtonElement };
   }
 }

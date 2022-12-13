@@ -43,7 +43,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
             <p class="lane-status-name">DOING</p>
           </div>
 
-          <div id="doingList" class="tasks"></div>
+          <div id="doingTaskList" class="tasks"></div>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
             <button id="deleteAllDoneTask" class="lane-status-delete">DONE のタスクを一括削除</button>
           </div>
 
-          <div id="doneList" class="tasks"></div>
+          <div id="doneTaskList" class="tasks"></div>
         </div>
       </div>
     </div>

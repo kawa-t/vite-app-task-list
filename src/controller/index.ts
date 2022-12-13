@@ -7,7 +7,9 @@ export class Application {
   private readonly eventListenTask = new EventListenTask();
   private readonly taskCollection = new TaskCollection();
   private readonly taskRender = new TaskRender(
-    document.getElementById("todoTaskList") as HTMLElement
+    document.getElementById("todoTaskList") as HTMLElement,
+    document.getElementById("doingTaskList") as HTMLElement,
+    document.getElementById("doneTaskList") as HTMLElement
   );
 
   start() {
@@ -21,6 +23,8 @@ export class Application {
       createForm,
       this.handleSubmit
     );
+
+    this.taskRender.subscribeDragAndDrop();
   }
   private handleSubmit = (event: Event) => {
     event.preventDefault();
@@ -52,7 +56,11 @@ export class Application {
   private handleClickDeleteTask = (taskId: TaskInstance) => {
     if (!window.confirm(`${taskId.title}を削除してもいいですか`)) return;
 
-    console.log(taskId);
+    this.eventListenTask.removeTask(taskId.taskId);
+
+    this.taskCollection.delete(taskId);
+    console.log(this.taskCollection);
+    this.taskRender.remove(taskId);
   };
 }
 

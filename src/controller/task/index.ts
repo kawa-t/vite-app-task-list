@@ -1,22 +1,27 @@
 import { v4 as uuid } from "uuid";
 
 export const TaskStatusMap = {
-  Todo: "TODO",
-  InProgress: "INPROGRESS",
-  Done: "DONE",
-} as const satisfies Record<string, "TODO" | "INPROGRESS" | "DONE">;
+  Todo: "Todo",
+  InProgress: "InProgress",
+  Done: "Done",
+} as const satisfies Record<string, "Todo" | "InProgress" | "Done">;
 
 export type TaskStatus = keyof typeof TaskStatusMap;
 
 export class TaskInstance {
   readonly taskId;
   title;
-  status;
+  status: TaskStatus;
 
   constructor(properties: { title: string }) {
     this.taskId = uuid();
     this.title = properties.title;
     this.status = TaskStatusMap.Todo;
+  }
+
+  updateStatus(properties: { title?: string; status?: TaskStatus }) {
+    this.title = properties.title || this.title;
+    this.status = properties.status || this.status;
   }
 }
 

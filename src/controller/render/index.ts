@@ -1,5 +1,5 @@
 // HTMLの描画を行うクラス
-import { TaskInstance } from "../task";
+import { TaskInstance, TaskStatus, TaskStatusMap } from "../task";
 import dragula from "dragula";
 
 export class TaskRender {
@@ -22,7 +22,17 @@ export class TaskRender {
 
     if (!taskElement) return;
 
-    this.todoTaskList.removeChild(taskElement);
+    // this.todoTaskList.removeChild(taskElement);
+
+    if (task.status === TaskStatusMap.Todo) {
+      this.todoTaskList.removeChild(taskElement);
+    }
+    if (task.status === TaskStatusMap.InProgress) {
+      this.doingTaskList.removeChild(taskElement);
+    }
+    if (task.status === TaskStatusMap.Done) {
+      this.doneTaskList.removeChild(taskElement);
+    }
   }
 
   // HTML要素を作成
@@ -43,12 +53,36 @@ export class TaskRender {
   }
 
   // ドラッグアンドドロップの設定
-  subscribeDragAndDrop() {
+  // subscribeDragAndDrop() {
+  //   dragula([this.todoTaskList, this.doingTaskList, this.doneTaskList]).on(
+  //     "drop",
+  //     (elment, target, source, sibling) => {
+  //       console.log(elment, target, source, sibling);
+  //     }
+  //   );
+  // }
+
+  subscribeDragAndDrop(
+    onDrop: (
+      elment: Element,
+      sibling: Element | null,
+      newStatus: TaskStatus
+    ) => void
+  ) {
     dragula([this.todoTaskList, this.doingTaskList, this.doneTaskList]).on(
       "drop",
-      (elment, target, source, sibling) => {
-        console.log(elment, target, source, sibling);
+      (elment, target, sibling) => {
+        let newStatus: TaskStatus = TaskStatusMap.Todo;
+
+        if (target.id === "doingTaskList") newStatus = TaskStatusMap.InProgress;
+        if (target.id === "doneTaskList") newStatus = TaskStatusMap.InProgress;
+
+        onDrop(elment, sibling, newStatus);
       }
     );
+  }
+
+  getTaskId(element: Element) {
+    return element.id;
   }
 }

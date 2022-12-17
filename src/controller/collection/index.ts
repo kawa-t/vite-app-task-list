@@ -13,4 +13,15 @@ export class TaskCollection {
       ({ taskId }) => taskId !== task.taskId
     );
   }
+
+  findTask(id: string) {
+    return this.taskList.find(({ taskId }) => taskId === id);
+  }
+
+  updateTask(task: TaskInstance) {
+    this.taskList = this.taskList.map((item) => {
+      if (item.taskId === task.taskId) return task;
+      return item;
+    });
+  }
 }

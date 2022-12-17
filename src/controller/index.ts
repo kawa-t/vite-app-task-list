@@ -1,5 +1,5 @@
 import { EventListenTask } from "./event/EventListenTask";
-import { TaskInstance } from "./task";
+import { TaskInstance, TaskStatus } from "./task";
 import { TaskCollection } from "./collection";
 import { TaskRender } from "./render";
 
@@ -24,7 +24,7 @@ export class Application {
       this.handleSubmit
     );
 
-    this.taskRender.subscribeDragAndDrop();
+    this.taskRender.subscribeDragAndDrop(this.handleDropAndDrop);
   }
   private handleSubmit = (event: Event) => {
     event.preventDefault();
@@ -38,8 +38,6 @@ export class Application {
     this.taskCollection.addTask(taskComponent);
 
     const { deleteButtonElement } = this.taskRender.append(taskComponent);
-
-    console.log(this.taskCollection);
 
     this.eventListenTask.addTask(
       taskComponent.taskId,
@@ -59,8 +57,29 @@ export class Application {
     this.eventListenTask.removeTask(taskId.taskId);
 
     this.taskCollection.delete(taskId);
-    console.log(this.taskCollection);
     this.taskRender.remove(taskId);
+  };
+
+  private handleDropAndDrop = (
+    element: Element,
+    sibling: Element | null,
+    newStatus: TaskStatus
+  ) => {
+    const taskId = this.taskRender.getTaskId(element);
+
+    if (!taskId) return;
+
+    console.log(taskId, sibling, newStatus);
+
+    const task = this.taskCollection.findTask(taskId);
+
+    if (!task) return;
+
+    task.updateStatus({ status: newStatus });
+
+    this.taskCollection.updateTask(task);
+
+    console.log(sibling);
   };
 }
 

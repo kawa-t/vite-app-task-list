@@ -1,4 +1,4 @@
-import { TaskInstance } from "../task";
+import { TaskInstance, TaskStatus } from "../task";
 
 export class TaskCollection {
   private taskList: TaskInstance[] = [];
@@ -23,5 +23,9 @@ export class TaskCollection {
       if (item.taskId === task.taskId) return task;
       return item;
     });
+  }
+
+  filterTask(filterStatus: TaskStatus) {
+    return this.taskList.filter(({ status }) => status === filterStatus);
   }
 }

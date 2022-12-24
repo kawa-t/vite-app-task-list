@@ -22,8 +22,6 @@ export class TaskRender {
 
     if (!taskElement) return;
 
-    // this.todoTaskList.removeChild(taskElement);
-
     if (task.status === TaskStatusMap.Todo) {
       this.todoTaskList.removeChild(taskElement);
     }
@@ -75,7 +73,7 @@ export class TaskRender {
         let newStatus: TaskStatus = TaskStatusMap.Todo;
 
         if (target.id === "doingTaskList") newStatus = TaskStatusMap.InProgress;
-        if (target.id === "doneTaskList") newStatus = TaskStatusMap.InProgress;
+        if (target.id === "doneTaskList") newStatus = TaskStatusMap.Done;
 
         onDrop(elment, sibling, newStatus);
       }

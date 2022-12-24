@@ -1,5 +1,5 @@
 import { EventListenTask } from "./event/EventListenTask";
-import { TaskInstance, TaskStatus } from "./task";
+import { TaskInstance, TaskStatus, TaskStatusMap } from "./task";
 import { TaskCollection } from "./collection";
 import { TaskRender } from "./render";
 
@@ -16,6 +16,9 @@ export class Application {
     console.log("Application started");
 
     const createForm = document.getElementById("createForm") as HTMLElement;
+    const deleteAllDoneTaskButton = document.getElementById(
+      "deleteAllDoneTask"
+    ) as HTMLElement;
 
     this.eventListenTask.addTask(
       "submit-handler",
@@ -24,8 +27,22 @@ export class Application {
       this.handleSubmit
     );
 
+    this.eventListenTask.addTask(
+      "click-handler",
+      "click",
+      deleteAllDoneTaskButton,
+      this.handleClickDeleteAllDoneTasks
+    );
+
     this.taskRender.subscribeDragAndDrop(this.handleDropAndDrop);
   }
+
+  private executeDeleteTask = (taskId: TaskInstance) => {
+    this.eventListenTask.removeTask(taskId.taskId);
+    this.taskCollection.delete(taskId);
+    this.taskRender.remove(taskId);
+  };
+
   private handleSubmit = (event: Event) => {
     event.preventDefault();
 
@@ -58,18 +75,17 @@ export class Application {
 
     this.taskCollection.delete(taskId);
     this.taskRender.remove(taskId);
+    this.executeDeleteTask(taskId);
   };
 
   private handleDropAndDrop = (
     element: Element,
-    sibling: Element | null,
+    // sibling: Element | null,
     newStatus: TaskStatus
   ) => {
     const taskId = this.taskRender.getTaskId(element);
 
     if (!taskId) return;
-
-    console.log(taskId, sibling, newStatus);
 
     const task = this.taskCollection.findTask(taskId);
 
@@ -78,8 +94,14 @@ export class Application {
     task.updateStatus({ status: newStatus });
 
     this.taskCollection.updateTask(task);
+  };
 
-    console.log(sibling);
+  private handleClickDeleteAllDoneTasks = () => {
+    if (!window.confirm("完了したタスクを全て削除しますか？")) return;
+
+    const doneTasks = this.taskCollection.filterTask(TaskStatusMap.Done);
+
+    doneTasks.forEach((task) => this.executeDeleteTask(task));
   };
 }
 

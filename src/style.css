@@ -7,12 +7,6 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
 }
 
 a {
@@ -55,22 +49,12 @@ h1 {
 .logo.vanilla:hover {
   filter: drop-shadow(0 0 2em #3178c6aa);
 }
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
@@ -99,13 +83,9 @@ button:focus-visible {
 .container {
   min-width: 900px;
   width: 100%;
-  margin: 0 auto;
-  padding: 20px;
   box-sizing: border-box;
 }
 .title {
-  margin: 0;
-  margin-bottom: 20px;
   font-weight: bold;
   font-size: 24px;
 }
@@ -118,12 +98,6 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-}
-.new-title {
-  margin: 0;
-  font-weight: bold;
-  font-size: 20px;
 }
 .new-button {
   font-size: 14px;
@@ -161,14 +135,7 @@ button:focus-visible {
 .lane-status {
   display: flex;
   align-items: center;
-  height: 40px;
-  padding: 0 5px;
   border-bottom: 1px solid #fff;
-}
-.lane-status-name {
-  margin: 0;
-  font-weight: bold;
-  font-size: 16px;
 }
 .lane-status-delete {
   margin-left: auto;
@@ -182,9 +149,6 @@ button:focus-visible {
   padding: 10px;
   list-style: none;
 }
-.tasks > *:not(:first-child) {
-  margin-top: 10px;
-}
 .task-item {
   display: flex;
   align-items: center;
@@ -195,21 +159,7 @@ button:focus-visible {
   box-sizing: border-box;
   cursor: grab;
 }
-.task-item::before {
-  width: 15px;
-  height: 15px;
-  margin-right: 5px;
-  border-radius: 2px;
-  background-color: #aaa;
-  content: "";
-}
 .task-item > span {
-  overflow: hidden;
-  display: table-cell;
-  max-width: 193px;
-  word-wrap: break-word;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   color: #033a03;
 }
 .task-item > button {

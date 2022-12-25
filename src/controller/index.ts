@@ -15,10 +15,20 @@ export class Application {
   start() {
     console.log("Application started");
 
+    const taskList = this.taskRender.renderAll(this.taskCollection);
     const createForm = document.getElementById("createForm") as HTMLElement;
     const deleteAllDoneTaskButton = document.getElementById(
       "deleteAllDoneTask"
     ) as HTMLElement;
+
+    taskList.forEach(({ task, deleteButtonElement }) => {
+      this.eventListenTask.addTask(
+        task.taskId,
+        "click",
+        deleteButtonElement,
+        () => this.handleClickDeleteTask(task)
+      );
+    });
 
     this.eventListenTask.addTask(
       "submit-handler",
@@ -80,7 +90,7 @@ export class Application {
 
   private handleDropAndDrop = (
     element: Element,
-    // sibling: Element | null,
+    sibling: Element | null,
     newStatus: TaskStatus
   ) => {
     const taskId = this.taskRender.getTaskId(element);
@@ -94,6 +104,19 @@ export class Application {
     task.updateStatus({ status: newStatus });
 
     this.taskCollection.updateTask(task);
+
+    if (sibling) {
+      const nextTaskId = this.taskRender.getTaskId(element);
+
+      if (!nextTaskId) return;
+
+      const nextTaskList = this.taskCollection.findTask(nextTaskId);
+      if (!nextTaskList) return;
+
+      this.taskCollection.moveAboveTarget(task, nextTaskList);
+    } else {
+      this.taskCollection.moveToLast(task);
+    }
   };
 
   private handleClickDeleteAllDoneTasks = () => {

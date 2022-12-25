@@ -1,5 +1,6 @@
 // HTMLの描画を行うクラス
 import { TaskInstance, TaskStatus, TaskStatusMap } from "../task";
+import { TaskCollection } from "../collection";
 import dragula from "dragula";
 
 export class TaskRender {
@@ -8,6 +9,23 @@ export class TaskRender {
     private readonly doingTaskList: HTMLElement,
     private readonly doneTaskList: HTMLElement
   ) {}
+
+  renderAll(taskCollection: TaskCollection) {
+    const todoTaskList = this.renderList(
+      taskCollection.filterTask(TaskStatusMap.Todo),
+      this.todoTaskList
+    );
+    const doingTaskList = this.renderList(
+      taskCollection.filterTask(TaskStatusMap.InProgress),
+      this.doingTaskList
+    );
+    const doneTaskList = this.renderList(
+      taskCollection.filterTask(TaskStatusMap.Done),
+      this.doneTaskList
+    );
+
+    return [...todoTaskList, ...doingTaskList, ...doneTaskList];
+  }
 
   append(task: TaskInstance) {
     const { taskElement, deleteButtonElement } = this.render(task);
@@ -48,6 +66,23 @@ export class TaskRender {
     taskElement.append(spanTagElement, deleteButtonElement);
 
     return { taskElement, deleteButtonElement };
+  }
+
+  private renderList(tasks: TaskInstance[], listElement: HTMLElement) {
+    if (tasks.length === 0) return [];
+
+    const taskList: Array<{
+      task: TaskInstance;
+      deleteButtonElement: HTMLElement;
+    }> = [];
+
+    tasks.forEach((task) => {
+      const { taskElement, deleteButtonElement } = this.render(task);
+      listElement.append(taskElement);
+      taskList.push({ task, deleteButtonElement });
+    });
+
+    return taskList;
   }
 
   // ドラッグアンドドロップの設定

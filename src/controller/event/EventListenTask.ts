@@ -14,7 +14,7 @@ export class EventListenTask {
     element.addEventListener(event, handler);
   }
 
-  // 削除
+  // リスナー削除
   removeTask(id: string) {
     const listener = this.listeners[id];
     if (!listener) return;
